@@ -56,26 +56,29 @@ def solve_it(input_data):
     # weight_to_value_ratio = []
     # for item in items:
     #     weight_to_value_ratio.append((item.value/item.weight, item.index))
-    # weight_to_value_ratio.sort(reverse=True)
+    # weight_to_value_ratio.sort(key=lambda tup: tup[0], reverse=True)
 
-    # for item in items_ratios:
-    #     if weight + item.weight <= capacity:
-    #         taken[item.index] = 1
-    #         value += item.value
-    #         weight += item.weight
+    if item_count > 60:
+        items_ratios.sort(key=lambda tup: tup[1], reverse=True)
 
-    # ----------------------------------------------------------------
-    # After greedy (which clearly didn't pass, let's try a DP approach)
-    table = dp_solution(item_count, capacity, items)
-    # Now we reconstruct the solution based on the table
-    curr_cap = capacity
-    for it in range(item_count, 0, -1):
-        if table[curr_cap][it] != table[curr_cap][it - 1]:
-            taken[items[it - 1].index] = 1
-            value += items[it-1].value
-            curr_cap -= items[it - 1].weight
-        else:
-            taken[items[it - 1].index] = 0
+        for item in items_ratios:
+            if weight + item.weight <= capacity:
+                taken[item.index] = 1
+                value += item.value
+                weight += item.weight
+    else:
+        # ----------------------------------------------------------------
+        # After greedy (which clearly didn't pass, let's try a DP approach)
+        table = dp_solution(item_count, capacity, items)
+        # Now we reconstruct the solution based on the table
+        curr_cap = capacity
+        for it in range(item_count, 0, -1):
+            if table[curr_cap][it] != table[curr_cap][it - 1]:
+                taken[items[it - 1].index] = 1
+                value += items[it-1].value
+                curr_cap -= items[it - 1].weight
+            else:
+                taken[items[it - 1].index] = 0
 
     # ----------------------------------------------------------------
     # prepare the solution in the specified output format

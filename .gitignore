@@ -7,6 +7,8 @@ __pycache__/
 # C extensions
 *.so
 
+opt_venv/
+
 # Distribution / packaging
 .Python
 build/
